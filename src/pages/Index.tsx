@@ -8,10 +8,8 @@ import product4 from "@/assets/product-4.jpg";
 import product5 from "@/assets/product-5.jpg";
 import news1 from "@/assets/news-1.jpg";
 import news2 from "@/assets/news-2.jpg";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-black text-white">
+  return <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-white/10">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
@@ -27,13 +25,7 @@ const Index = () => {
 
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
-        >
+        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-50">
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
         <div className="relative z-10 container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
@@ -45,7 +37,7 @@ const Index = () => {
             </h1>
           </div>
           <div className="flex justify-center">
-            <img src={heroBrain} alt="GESTALA Brain Technology" className="w-full max-w-md glow-blue rounded-full" />
+            
           </div>
         </div>
       </section>
@@ -69,16 +61,12 @@ const Index = () => {
       <section className="py-20 bg-black/50">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-6 gap-4">
-            {[...Array(18)].map((_, i) => (
-              <div key={i} className="aspect-square bg-gradient-to-br from-blue-600 to-blue-900 rounded-lg glow-blue flex items-center justify-center relative group cursor-pointer">
-                {i === 9 && (
-                  <div className="absolute inset-0 flex items-center justify-center">
+            {[...Array(18)].map((_, i) => <div key={i} className="aspect-square bg-gradient-to-br from-blue-600 to-blue-900 rounded-lg glow-blue flex items-center justify-center relative group cursor-pointer">
+                {i === 9 && <div className="absolute inset-0 flex items-center justify-center">
                     <Play className="w-12 h-12 text-white" />
-                  </div>
-                )}
+                  </div>}
                 <span className="text-4xl font-bold opacity-50 group-hover:opacity-100 transition">8</span>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -90,17 +78,23 @@ const Index = () => {
           
           {/* Product Series */}
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {[
-              { title: "Product Series 1", subtitle: "产品系列1", desc: "The standard used to evaluate your brain's health and user's brain function. It has been used to study and monitor brain health in various clinical settings, including stroke, TBI, ADHD, epilepsy, and more. Utilizing AI and big data, after years of accumulation, there are more than 10,000 brain health..." },
-              { title: "Product Series 2", subtitle: "产品系列2", desc: "Like a stethoscope for a heart or a blood pressure cuff, the standard used to evaluate your brain's health. Based on a century of research on EEG, we utilize the proprietary algorithm, based on AI and deep learning model to assess one's brain health..." },
-              { title: "Product Series 3", subtitle: "产品系列3", desc: "The standard used to evaluate your brain's health and function. Utilizing advanced EEG analysis with AI/ML technologies, based on decades of neuroscience, our algorithm provides comprehensive..." }
-            ].map((product, i) => (
-              <div key={i} className="border border-white/10 rounded-lg p-6 hover:border-blue-500/50 transition">
+            {[{
+            title: "Product Series 1",
+            subtitle: "产品系列1",
+            desc: "The standard used to evaluate your brain's health and user's brain function. It has been used to study and monitor brain health in various clinical settings, including stroke, TBI, ADHD, epilepsy, and more. Utilizing AI and big data, after years of accumulation, there are more than 10,000 brain health..."
+          }, {
+            title: "Product Series 2",
+            subtitle: "产品系列2",
+            desc: "Like a stethoscope for a heart or a blood pressure cuff, the standard used to evaluate your brain's health. Based on a century of research on EEG, we utilize the proprietary algorithm, based on AI and deep learning model to assess one's brain health..."
+          }, {
+            title: "Product Series 3",
+            subtitle: "产品系列3",
+            desc: "The standard used to evaluate your brain's health and function. Utilizing advanced EEG analysis with AI/ML technologies, based on decades of neuroscience, our algorithm provides comprehensive..."
+          }].map((product, i) => <div key={i} className="border border-white/10 rounded-lg p-6 hover:border-blue-500/50 transition">
                 <h3 className="text-xl font-bold mb-2">{product.title}</h3>
                 <p className="text-sm text-gray-400 mb-4">{product.subtitle}</p>
                 <p className="text-sm text-gray-300 leading-relaxed">{product.desc}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
 
           {/* Product Images */}
@@ -151,26 +145,13 @@ const Index = () => {
       <section className="py-12 bg-black/50">
         <div className="container mx-auto px-6">
           <div className="flex justify-center gap-8 flex-wrap">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 to-blue-900 glow-blue"></div>
-            ))}
+            {[...Array(8)].map((_, i) => <div key={i} className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 to-blue-900 glow-blue"></div>)}
           </div>
         </div>
       </section>
 
       {/* CTA Buttons */}
-      <section className="py-12">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            <Button className="h-16 text-lg bg-gradient-to-r from-pink-400 to-blue-500 hover:from-pink-500 hover:to-blue-600">
-              Request a Demo
-            </Button>
-            <Button className="h-16 text-lg bg-gradient-to-r from-blue-400 to-purple-500 hover:from-blue-500 hover:to-purple-600">
-              Start Building
-            </Button>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Join Us Section */}
       <section className="py-20 bg-black/50">
@@ -226,11 +207,9 @@ const Index = () => {
       {/* Footer */}
       <footer className="py-20 border-t border-white/10">
         <div className="container mx-auto px-6">
-          <h2 className="text-[120px] md:text-[200px] font-bold leading-none">Gestala</h2>
+          <h2 className="text-[120px] font-bold leading-none text-center md:text-9xl">Gestala</h2>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
