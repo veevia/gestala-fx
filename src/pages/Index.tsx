@@ -13,13 +13,8 @@ const Index = () => {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-white/10">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold">GESTALA</div>
-          <div className="hidden md:flex gap-8 text-sm">
-            <a href="#home" className="hover:text-blue-400 transition">Home</a>
-            <a href="#product" className="hover:text-blue-400 transition">Product</a>
-            <a href="#about" className="hover:text-blue-400 transition">About</a>
-            <a href="#contact" className="hover:text-blue-400 transition">Contact</a>
-          </div>
+          
+          
         </div>
       </nav>
 
