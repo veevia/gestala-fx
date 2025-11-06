@@ -1,0 +1,1 @@
+import{j as s}from"./index-9po6QOFo.js";import{L as o,H as t}from"./HeroSection-9EJZV-Z5.js";const a=()=>s.jsxs(o,{children:[s.jsx(t,{}),s.jsx("section",{className:"h-[600px]"})]});export{a as default};
