@@ -7,69 +7,86 @@ const vertexShaderSource = `
   }
 `;
 
-// A new, license-free fragment shader for an analog VHS glitch effect.
+// A new, original, and license-free fragment shader for an analog VHS glitch effect.
 const fragmentShaderSource = `
   precision mediump float;
   uniform float u_time;
   uniform vec2 u_resolution;
   uniform vec2 u_mouse;
 
-  // Randomness function
-  float random(vec2 st) {
-      return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453);
+  // A common public-domain hash function for creating noise.
+  float hash(vec2 p) {
+    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+  }
+
+  // A palette function to generate vibrant, shifting colors.
+  vec3 palette(float t) {
+    vec3 a = vec3(0.5, 0.5, 0.5);
+    vec3 b = vec3(0.5, 0.5, 0.5);
+    vec3 c = vec3(1.0, 0.7, 0.4);
+    vec3 d = vec3(0.00, 0.15, 0.20);
+    return a + b * cos(6.28318 * (c * t + d));
   }
 
   void main() {
     // Correct aspect ratio
     vec2 uv = gl_FragCoord.xy / u_resolution.xy;
     
-    // Mouse influence
-    float mouse_dist = length(gl_FragCoord.xy - u_mouse);
-    float mouse_influence = smoothstep(200.0, 0.0, mouse_dist);
+    // Mouse interaction - center is (0.5, 0.5) in UV space
+    vec2 mouse_uv = u_mouse / u_resolution.xy;
 
-    // --- VHS Effects ---
+    // --- VHS Effect Calculations ---
 
-    // 1. Wavy horizontal distortion
-    float wave_speed = u_time * 3.0;
-    float wave_strength = 0.003 + mouse_influence * 0.005;
-    vec2 distorted_uv = uv;
-    distorted_uv.x += sin(distorted_uv.y * 25.0 + wave_speed) * wave_strength;
+    // 1. Horizontal Wave Distortion
+    // This creates the characteristic wavy effect of old tapes.
+    float wave_speed = u_time * 2.0;
+    float wave_freq = 20.0;
+    float wave_strength = 0.002;
+    float mouseDistance = distance(uv, mouse_uv);
+    vec2 distorted_uv = uv + mouseDistance * 0.1;
+    distorted_uv.x += sin(distorted_uv.y * wave_freq + wave_speed) * wave_strength;
 
-    // 2. Chromatic Aberration (Color bleeding)
-    float aberration = 0.002 + mouse_influence * 0.004;
-    float r_alpha = random(distorted_uv + vec2(aberration, 0.0)) * 0.1;
-    float b_alpha = random(distorted_uv - vec2(aberration, 0.0)) * 0.1;
-
-    // 3. Scan Lines
-    float scanline_intensity = 0.05;
-    float scanline = sin(distorted_uv.y * 700.0) * scanline_intensity;
-
-    // 4. Glitch "Jump"
-    float glitch_time = u_time * 0.5;
-    if (fract(glitch_time) > 0.95) {
-      if (uv.y > 0.4 && uv.y < 0.6) {
-        distorted_uv.x += (random(vec2(glitch_time)) - 0.5) * 0.1;
-      }
-    }
-
-    // --- Combine Effects ---
-    vec3 final_color = vec3(0.0);
-    float final_alpha = 0.0;
-
-    // Add color from the aberration
-    final_color.r += r_alpha;
-    final_color.b += b_alpha;
-
-    // Add the scanline effect
-    final_alpha += scanline;
-
-    // Add some general noise
-    final_alpha += (random(distorted_uv) - 0.5) * 0.05;
-
+    // 2. Scan Lines
+    // Simulates the horizontal lines of a CRT screen.
+    float scanline_freq = 600.0;
+    float scanline_strength = 0.05;
+    float scanline_effect = sin(distorted_uv.y * scanline_freq) * scanline_strength;
     // Make the effect stronger with mouse influence
-    final_alpha *= (1.0 + mouse_influence * 2.0);
+    scanline_effect *= (1.0 + (1.0-mouseDistance) * 0.5);
 
-    gl_FragColor = vec4(final_color + final_alpha, final_alpha);
+    // 3. Chromatic Aberration & Noise
+    // Creates color bleeding and static by generating noise at offset coordinates.
+    float aberration_amount = 0.003;
+    float r_noise = hash(distorted_uv + vec2(aberration_amount, 0.0));
+    float b_noise = hash(distorted_uv - vec2(aberration_amount, 0.0));
+    float general_noise = hash(distorted_uv + u_time * 0.1) * 0.05;
+
+    // 4. Intermittent Glitch Bar
+    // A horizontal bar that randomly appears and scrolls.
+    float glitch_bar_time = u_time * 0.3;
+    float glitch_bar_speed = 10.0;
+    float glitch_bar_height = 0.1;
+    float glitch_bar_effect = 0.0;
+    if (fract(glitch_bar_time) > 0.95) {
+      float y = fract(glitch_bar_time) * 1.2 - 0.1;
+      glitch_bar_effect = step(y, uv.y) - step(y + glitch_bar_height, uv.y);
+      glitch_bar_effect *= (hash(vec2(floor(glitch_bar_time), 0.0)) - 0.5) * (0.2 + (1.0-mouseDistance) * 0.3); // Horizontal shift
+      distorted_uv.x += (sin(glitch_bar_time*glitch_bar_speed) * 0.01);
+    }
+    distorted_uv.x += glitch_bar_effect;
+
+
+    // --- Final Composition ---
+    // Start with the base Red/Blue color bleed
+    vec3 final_color = vec3(r_noise * 0.1, 0.0, b_noise * 0.1); 
+    
+    // Add the bright gradient color based on mouse distance and time
+    float color_phase = (1.0 - mouseDistance) + u_time * 0.5;
+    final_color += palette(color_phase) * (1.0 - mouseDistance) * 0.2; // Reduced brightness from 2.0 to 0.2
+
+    float final_alpha = scanline_effect + general_noise + abs(glitch_bar_effect * 2.0);
+
+    gl_FragColor = vec4(final_color, clamp(final_alpha, 0.0, 0.8));
   }
 `;
 
