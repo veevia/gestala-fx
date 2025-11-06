@@ -39,15 +39,11 @@ export const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
             ))}
           </div>
           {/* Hamburger Menu Button for Mobile */}
-          <div className="md:hidden z-[101]">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="relative w-6 h-6 flex flex-col justify-around"
-              aria-label="Toggle menu"
-            >
-              <span className={`block w-full h-0.5 bg-white transition-transform duration-300 ease-in-out ${isMenuOpen ? "rotate-45 translate-y-[7px]" : ""}`}></span>
-              <span className={`block w-full h-0.5 bg-white transition-opacity duration-300 ease-in-out ${isMenuOpen ? "opacity-0" : "opacity-100"}`}></span>
-              <span className={`block w-full h-0.5 bg-white transition-transform duration-300 ease-in-out ${isMenuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`}></span>
+          <div className="md:hidden">
+            <button onClick={() => setIsMenuOpen(true)} className="z-[101] flex flex-col justify-around w-6 h-6">
+              <span className="block w-full h-0.5 bg-white"></span>
+              <span className="block w-full h-0.5 bg-white"></span>
+              <span className="block w-full h-0.5 bg-white"></span>
             </button>
           </div>
         </div>
@@ -55,7 +51,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
 
       {/* Mobile Fly-in Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-full bg-black/95 backdrop-blur-lg z-[100] transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-full bg-black/90 backdrop-blur-lg z-[100] transition-transform duration-300 ease-in-out ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
