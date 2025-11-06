@@ -2,7 +2,6 @@
   "name": "gestala-fx",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://veevia.github.io/gestala-fx/",
   "type": "module",
   "scripts": {
     "dev": "vite",
