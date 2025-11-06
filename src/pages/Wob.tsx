@@ -3,6 +3,7 @@ import { useRef } from "react";
 import WobShaderOverlay from "@/components/WobShaderOverlay";
 import { Layout } from "@/components/Layout";
 import { MagicCursor } from "@/components/MagicCursor";
+import { useVideoScrub } from "@/hooks/useVideoScrub";
 import { HeroSection } from "@/components/HeroSection";
 
 const Wob = () => {
