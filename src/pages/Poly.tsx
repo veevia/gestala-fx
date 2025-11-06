@@ -114,6 +114,16 @@ const Poly = () => {
         </video>
         <VhsShaderOverlay />
       </section>
+
+      {/* Blank Body Section */}
+      <section className="h-[600px]"></section>
+
+      {/* Footer */}
+      <footer className="py-20 border-t border-white/10">
+        <div className="container mx-auto px-6">
+          <h2 className="text-[120px] font-bold leading-none text-center md:text-9xl">Gestala</h2>
+        </div>
+      </footer>
     </div>;
 };
 export default Poly;

@@ -22,6 +22,9 @@ const Index = () => {
         
       </section>
 
+      {/* Blank Body Section */}
+      <section className="h-[600px]"></section>
+
       {/* Footer */}
       <footer className="py-20 border-t border-white/10">
         <div className="container mx-auto px-6">
