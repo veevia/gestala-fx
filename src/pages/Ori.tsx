@@ -11,9 +11,14 @@ const Ori = () => {
   useVideoScrub(videoRef, heroRef);
 
   return (
-    <Layout pageTitle="Ori">
+    <Layout>
       <MagicCursor heroRef={heroRef} />
-      <HeroSection ref={heroRef} videoRef={videoRef} className="hide-cursor" />
+      <HeroSection
+        ref={heroRef}
+        videoRef={videoRef}
+        className="hide-cursor"
+        videoClassName="opacity-50"
+      />
 
       {/* Blank Body Section */}
       <section className="h-[600px]"></section>

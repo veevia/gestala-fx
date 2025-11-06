@@ -1,73 +1,40 @@
-# Welcome to your Lovable project
+ # Gestala FX Playground
 
-## Project info
+ This project is a playground for experimenting with UI/visual effects, with a focus on advanced code-splitting patterns and component architecture. The primary exploration is around the "sidecar" pattern, which separates view-layer components from their logic and side effects.
 
-**URL**: https://lovable.dev/projects/31a4a274-1304-466c-b95f-ee8e9516960b
+ ## Core Concepts
 
-## How can I edit this code?
+ The core idea is to treat UI effects as "sidecars" to the main UI components. This allows for:
 
-There are several ways of editing your application.
+ *   **Improved Code Splitting**: The UI can be rendered immediately, while heavier logic for interactivity and effects can be loaded asynchronously. This is inspired by patterns discussed for large-scale JavaScript applications.
+ *   **Decoupled Architecture**: By separating the view from its logic, components become more focused and reusable. The `use-sidecar` library is a key part of this exploration.
+ *   **Enhanced Performance**: Deferring the loading and execution of non-critical effects can significantly improve initial page load and interactivity metrics.
 
-**Use Lovable**
+ This playground serves as a practical environment to test these "gestala" effects and patterns.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/31a4a274-1304-466c-b95f-ee8e9516960b) and start prompting.
+ ## Technology Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+ This project is built with a modern frontend stack:
 
-**Use your preferred IDE**
+ *   **Vite**: For a fast and lean development experience.
+ *   **React**: For building the user interface.
+ *   **TypeScript**: For type safety and improved developer experience.
+ *   **Tailwind CSS**: For utility-first styling.
+ *   **shadcn-ui**: For beautifully designed, accessible, and composable components.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+ ## Development
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+ To get started with the project locally, follow these steps. You'll need to have Node.js and npm installed.
 
-Follow these steps:
+ ```sh
+ # 1. Clone the repository
+ git clone <YOUR_GIT_URL>
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+ # 2. Navigate to the project directory
+ cd gestala-fx
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+ # 3. Install dependencies
+ npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+ # 4. Start the development server
 npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/31a4a274-1304-466c-b95f-ee8e9516960b) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)

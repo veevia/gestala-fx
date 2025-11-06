@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 
 interface LayoutProps {
   children: React.ReactNode;
-  pageTitle: string;
 }
 
 const navLinks = [
@@ -13,7 +12,7 @@ const navLinks = [
   { href: "/wob", label: "Wob" },
 ];
 
-export const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
+export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -30,7 +29,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
     <div className="min-h-screen bg-black text-white">
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-white/10">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold">GESTALA ({pageTitle})</div>
+          <div className="text-2xl font-bold">GESTALA</div>
           <div className="hidden md:flex gap-8 text-sm">
             {navLinks.map((link) => (
               <Link key={link.href} to={link.href} className={`${location.pathname === link.href ? "text-blue-400" : "hover:text-blue-400"} transition`}>

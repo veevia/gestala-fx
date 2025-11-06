@@ -32,8 +32,8 @@ const Poly = () => {
   }, []); // Spotlight logic is separate and only needs the heroRef
 
   return (
-    <Layout pageTitle="Poly">
-      <HeroSection ref={heroRef} videoRef={videoRef}>
+    <Layout>
+      <HeroSection ref={heroRef} videoRef={videoRef} videoClassName="opacity-50">
         <div
           ref={spotlightRef}
           className="absolute inset-0 pointer-events-none"

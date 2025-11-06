@@ -10,9 +10,14 @@ const Wob = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   return (
-    <Layout pageTitle="Wob">
+    <Layout>
       <MagicCursor heroRef={heroRef} />
-      <HeroSection ref={heroRef} videoRef={videoRef} className="hide-cursor">
+      <HeroSection
+        ref={heroRef}
+        videoRef={videoRef}
+        className="hide-cursor"
+        videoClassName="opacity-50"
+      >
         <WobShaderOverlay />
       </HeroSection>
 

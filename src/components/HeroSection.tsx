@@ -1,19 +1,32 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect, useRef } from "react";
 
 interface HeroSectionProps {
-  videoRef: React.RefObject<HTMLVideoElement>;
   children?: React.ReactNode;
   className?: string;
+  videoClassName?: string;
+  videoRef?: React.RefObject<HTMLVideoElement>;
 }
 
 export const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
-  ({ videoRef, children, className }, ref) => {
+  ({ children, className, videoClassName, videoRef: externalVideoRef }, ref) => {
+    const internalVideoRef = useRef<HTMLVideoElement>(null);
+    const videoRef = externalVideoRef || internalVideoRef;
+
+    useEffect(() => {
+      if (videoRef.current) {
+        videoRef.current.play().catch(error => {
+          // Autoplay was prevented by the browser.
+          console.error("Video autoplay was prevented:", error);
+        });
+      }
+    }, []);
+
     return (
       <section
         ref={ref}
         className={`relative h-screen flex items-center justify-center overflow-hidden ${className || ""}`}
       >
-        <video ref={videoRef} autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-50">
+        <video ref={videoRef} loop muted playsInline className={`absolute inset-0 w-full h-full object-cover ${videoClassName || ''}`}>
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
         {children}
