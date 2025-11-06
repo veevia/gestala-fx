@@ -11,12 +11,15 @@ import Ori from "./pages/Ori";
 
 const queryClient = new QueryClient();
 
+// Set the basename for the router only in production for GitHub Pages deployment.
+const basename = import.meta.env.PROD ? "/gestala-fx/" : "/";
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+    <BrowserRouter basename={basename}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/poly" element={<Poly />} />
@@ -25,8 +28,8 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+      </TooltipProvider>
+    </BrowserRouter>
   </QueryClientProvider>
 );
 
