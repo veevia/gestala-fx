@@ -14,7 +14,7 @@ const fragmentShaderSource = `
   uniform vec2 u_resolution;
   uniform vec2 u_mouse;
 
-  // 2D Random
+  // 2D Random (hash function)
   float random(vec2 st) {
       return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
   }
@@ -34,29 +34,12 @@ const fragmentShaderSource = `
   float fbm(vec2 st) {
       float value = 0.0;
       float amplitude = 0.5;
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 4; i++) { // Kept at 4 octaves for a smooth but detailed noise
           value += amplitude * noise(st);
           st *= 2.0;
           amplitude *= 0.5;
       }
       return value;
-  }
-  
-  // Rotation function
-  vec2 rotate(vec2 uv, float angle) {
-    float s = sin(angle);
-    float c = cos(angle);
-    mat2 rotMat = mat2(c, -s, s, c);
-    return rotMat * (uv - 0.5) + 0.5;
-  }
-
-  // Color palette function to create smooth gradients
-  vec3 palette(float t) {
-    vec3 a = vec3(0.5, 0.5, 0.5);
-    vec3 b = vec3(0.5, 0.5, 0.5);
-    vec3 c = vec3(1.0, 1.0, 1.0);
-    vec3 d = vec3(0.00, 0.33, 0.67);
-    return a + b * cos(6.28318 * (c * t + d));
   }
 
   void main() {
@@ -67,44 +50,41 @@ const fragmentShaderSource = `
     vec2 mouse_uv = u_mouse / u_resolution.xy;
     mouse_uv.x *= u_resolution.x / u_resolution.y;
     
-    // Mouse influence
+    // --- Re-introduce mouse interaction and distortion ---
     float mouseDistance = distance(mouse_uv, uv);
     float mouseInfluence = smoothstep(0.4, 0.0, mouseDistance);
     
-    // Time-based wobble and twist
     float time = u_time * 0.2;
-    float wobbleStrength = 0.05 + mouseInfluence * 0.1;
-    float twistStrength = 5.0 + mouseInfluence * 10.0;
-    
-    // Create wobble effect using FBM noise
-    float wobble = fbm(uv * 2.0 + time) * wobbleStrength;
-    
-    // Create twist effect by rotating coordinates
-    float angle = (length(uv - 0.5) * twistStrength) + time;
-    vec2 twistedUV = rotate(uv, angle);
-    
-    // Apply distortion to the UV coordinates
-    vec2 distortedUV = twistedUV + vec2(wobble * cos(time), wobble * sin(time));
-    
-    // --- Create the smooth gradient glow effect ---
-    // Reduced density grid
-    vec2 grid = fract(distortedUV * 12.0); 
+    // The twist is now primarily driven by mouse proximity
+    float twistStrength = mouseInfluence * 5.0;
+    float angle = (length(uv - mouse_uv) * twistStrength) + time;
+    float s = sin(angle);
+    float c = cos(angle);
+    vec2 distortedUV = mat2(c, -s, s, c) * (uv - mouse_uv) + mouse_uv;
+
+    // Add a subtle background wobble
+    distortedUV += fbm(uv * 2.0 + time) * 0.03;
+
+    // --- Create the grid using the distorted coordinates ---
+    vec2 grid = fract(distortedUV * 40.0); 
     // Calculate distance to the nearest grid line
     float d = min(grid.x, 1.0 - grid.x) + min(grid.y, 1.0 - grid.y);
 
-    // --- Create a multi-layered glow for a more refined effect ---
-    // A sharp, bright core for the line itself
-    float core_glow = pow(0.01 / d, 2.5);
-    // A softer, wider surrounding aura
-    float outer_glow = pow(0.04 / d, 1.5);
+    // --- Create the glow effect for the grid lines ---
+    float core_glow = pow(0.01 / d, 2.0);
+    float outer_glow = pow(0.05 / d, 1.5);
 
     // --- Final color and transparency ---
-    // Use the palette function for color, based on time and position
-    vec3 color = palette(length(uv) + time * 0.5);
+    vec3 dark_blue = vec3(0.1, 0.2, 0.5);
+    vec3 white = vec3(1.0, 1.0, 1.0);
     
-    // Combine the glows and apply them to the color and alpha
+    // The color is a mix of blue and white, with white being strongest near the cursor
+    vec3 color = mix(dark_blue, white, mouseInfluence * 1.5);
+
+    // Combine the glows and apply them to the final color
     vec3 final_color = color * (outer_glow * 0.5 + core_glow * 0.5);
-    float alpha = (outer_glow * 0.1 + core_glow * 0.9) * (0.2 + mouseInfluence * 0.5);
+    // The alpha is determined by the glow, amplified by the mouse
+    float alpha = (outer_glow * 0.2 + core_glow * 0.8) * (0.3 + mouseInfluence * 0.4);
 
     gl_FragColor = vec4(final_color, alpha);
   }
