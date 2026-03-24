@@ -19,7 +19,7 @@ export const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
           console.error("Video autoplay was prevented:", error);
         });
       }
-    }, []);
+    }, [videoRef]);
 
     return (
       <section
